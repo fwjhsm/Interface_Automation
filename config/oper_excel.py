@@ -2,7 +2,8 @@ import xlwt
 import xlrd
 import requests
 import json
-# import urlbm
+
+
 data = xlrd.open_workbook("data.xlsx")
 
 # 通过excel里面的表名获取工作表
@@ -19,9 +20,9 @@ table3 = data.sheet_names()[0]
 # row = table.row_values(0)
 row2 = table.row_values(1)
 
-# ncol = table.ncols
-# print(ncol,"ncol"
-#       )    #获取列数
+ncol = table.ncols
+print(ncol,"ncol"
+      )    #获取列数
 nrow = table.nrows   #获取行数
 # print(nrow,"nrow")
 
@@ -36,20 +37,22 @@ class Test1():
 
         if self.get_col(j)[1] == "POST":
             url = self.get_col(j)[0]
-            data = self.get_col(j)[2].encode("UTF8")
+            data = self.get_col(j)[2].encode("utf-8")
             response = requests.post(url,data=self.get_col(j)[2],headers = json.loads(self.get_col(j)[3]))
             print(response.text)
             print(response.url)
+            print(response.status_code)
             return response.text
 
 
 
         elif self.get_col(j)[1] == "GET":
-            url = self.get_col(j)[0].decode("utf-8")
+            url = self.get_col(j)[0]
             data = self.get_col(j)[2]
+            # data = data.decode("utf8")
             print(data)
-
             response = requests.get(url,params = data,headers = json.loads(self.get_col(j)[3]))
+            print(response.status_code)
             print(response.text)
             print(response.url)
 
