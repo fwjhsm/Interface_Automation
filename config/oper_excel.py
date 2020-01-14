@@ -19,15 +19,17 @@ class Test1():
     def test(self,j):
             Test1.num += 1  #进行一次函数num+1，确定异常出现行数
 
+            # 当前行的数据
+            getdata = self.get_col(j)
             # 判断请求类型
-            url = self.get_col(j)[0]
-            data = self.get_col(j)[2]
+            url = getdata[0]
+            data = getdata[2]
 
             # /*判断请求类型*/
-            if self.get_col(j)[1] == "POST":
-                response = requests.post(url,data = data,headers = json.loads(self.get_col(j)[3]))
-            elif self.get_col(j)[1] == "GET":
-                response = requests.get(url, params=data, headers=json.loads(self.get_col(j)[3]))
+            if getdata[1] == "POST":
+                response = requests.post(url,data = data,headers = json.loads(getdata[3]))
+            else:
+                response = requests.get(url, params=data, headers=json.loads(getdata[3]))
 
             jsondict = json.loads(response.text)  #json字符串转为字典，
 
