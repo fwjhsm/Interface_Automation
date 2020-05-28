@@ -2,49 +2,83 @@ import xlwt
 import xlrd
 import requests
 import json
-
-
+import re
 
 class Test1():
 
-
     num = 0  # 类属性
+
+    def __init__(self):
+        # 初始化方法，获取cookies
+        self.url = "https://api.quwank.com/login/submit"
+
+        self.data = {
+            "phone": 15617816225,
+            "password": 123456
+        }
+
+        self.response = requests.post(self.url,data = self.data)
+
+        # print(self.response.cookies.get_dict()["SESSION"])
+
+        self.cookies = self.response.cookies.get_dict()
+        # print(self.cookies,"init__cookies")
+        # return self.response.cookies.get_dict()["SESSION"]
 
     def get_col(self,i):
         # 获取excel文件中每行数据
         row = table.row_values(i)
         return row
 
-
     def test(self,j):
             Test1.num += 1  #进行一次函数num+1，确定异常出现行数
-
             # 当前行的数据
             getdata = self.get_col(j)
             # 判断请求类型
-            url = getdata[0]
-            data = getdata[2]
+            self.url = getdata[0]
+            data = json.loads(getdata[2])
+            number = int(getdata[5])
+            # print(number)
 
             # /*判断请求类型*/
             if getdata[1] == "POST":
-                response = requests.post(url,data = data,headers = json.loads(getdata[3]))
+                if int(getdata[5]) == 1:
+                    response = requests.post(self.url,data = data,cookies = self.cookies)#headers = json.loads(getdata[3]))
+                else:
+
+                    response = requests.post(self.url,data = data,)#headers = json.loads(getdata[3]))
+            #
             else:
-                response = requests.get(url, params=data, headers=json.loads(getdata[3]))
+                if getdata[5] == 1:
+                    response = requests.get(self.url, params=data, headers=json.loads(getdata[3]),cookies = self.cookies)
+                elif getdata[5] == 0:
+                    response = requests.get(self.url, params=data, headers=json.loads(getdata[3]))
 
-            jsondict = json.loads(response.text)  #json字符串转为字典，
-
-            msg = jsondict["msg"]   #取出key=msg的值
-
-            if jsondict["result"] != "success":
-                result = ("第%s行%s接口错误，返回值:%s" % (Test1.num + 1, url, msg))
-                return result
-            else:
-                result = jsondict["result"]
-                return result
+            self.jsondict = json.loads(response.text)  #json字符串转为字典，
+            # print(response.cookies)
 
 
-    def checkReponse(self):
-        return
+            print(self.checkResponse())
+
+
+    def checkResponse(self):
+        msg = self.jsondict["msg"]  # 取出key=msg的值
+
+        if self.jsondict["code"] != "0000":
+            result = ("第%s个%s接口错误，返回值:%s" % (Test1.num, self.url, msg))
+
+            with open("log.txt", "a+") as f:
+                f.write(result + "\n\t")
+
+            return result
+        else:
+            result = "pass" + "," + self.jsondict["msg"] + "," + str(self.jsondict["data"])
+            # status = "pass"
+            # status + "," + result
+            with open("log.txt", "a+", encoding="GBK") as f:
+                f.write(result + "\n\t")
+            return result
+
 
 
 if __name__ == '__main__':
@@ -71,5 +105,6 @@ if __name__ == '__main__':
         print(i+1)
         test = Test1()
         print(test.test(i + 1))
+
 
 
