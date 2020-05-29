@@ -37,21 +37,22 @@ class Test1():
             # 判断请求类型
             self.url = getdata[0]
             data = json.loads(getdata[2])
+            # 是否需要鉴权
             number = int(getdata[5])
             # print(number)
 
             # /*判断请求类型*/
             if getdata[1] == "POST":
-                if int(getdata[5]) == 1:
+                if number == 1:
                     response = requests.post(self.url,data = data,cookies = self.cookies)#headers = json.loads(getdata[3]))
                 else:
 
                     response = requests.post(self.url,data = data,)#headers = json.loads(getdata[3]))
             #
             else:
-                if getdata[5] == 1:
+                if number == 1:
                     response = requests.get(self.url, params=data, headers=json.loads(getdata[3]),cookies = self.cookies)
-                elif getdata[5] == 0:
+                elif number == 0:
                     response = requests.get(self.url, params=data, headers=json.loads(getdata[3]))
 
             self.jsondict = json.loads(response.text)  #json字符串转为字典，
