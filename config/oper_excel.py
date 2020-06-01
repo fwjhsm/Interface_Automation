@@ -68,7 +68,7 @@ class Test1():
         if self.jsondict["code"] != "0000":
             result = ("第%s个%s接口错误，返回值:%s" % (Test1.num, self.url, msg))
 
-            with open("log.txt", "a+") as f:
+            with open("D:\myCode\Interface_Automation\config\log.txt", "a+") as f:
                 f.write(result + "\n\t")
 
             return result
@@ -76,16 +76,16 @@ class Test1():
             result = "pass" + "," + self.jsondict["msg"] + "," + str(self.jsondict["data"])
             # status = "pass"
             # status + "," + result
-            with open("log.txt", "a+", encoding="GBK") as f:
+            with open("D:\myCode\Interface_Automation\config\log.txt", "a+", encoding="GBK") as f:
                 f.write(result + "\n\t")
             return result
 
 
 
 if __name__ == '__main__':
-    data = xlrd.open_workbook("data.xlsx")
+    # data = xlrd.open_workbook("data.xlsx")
     # 通过excel里面的表名获取工作表
-    table = data.sheet_by_name("Sheet1")
+    table = xlrd.open_workbook("D:\myCode\Interface_Automation\config\data.xlsx").sheet_by_name("Sheet1")
     # 通过索引获取工作表
     # table1 = data.sheet_by_index(0)
     # table2 = data.sheets()[0]
@@ -103,7 +103,7 @@ if __name__ == '__main__':
     # print(nrow,"nrow")
 
     # 开始执行时，先删除以前log数据
-    with open("log.txt","r+") as f:
+    with open("D:\myCode\Interface_Automation\config\log.txt","r+") as f:
         f.truncate(0)
 
 
