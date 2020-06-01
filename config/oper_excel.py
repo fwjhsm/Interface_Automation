@@ -3,7 +3,7 @@ import xlrd
 import requests
 import json
 import re
-
+# from Interface_Automation.config.logg import logg
 class Test1():
 
     num = 0  # 类属性
@@ -83,7 +83,7 @@ class Test1():
 
 
 if __name__ == '__main__':
-    data = xlrd.open_workbook("data.xlsx")
+    data = xlrd.open_workbook("data.csv")
     # 通过excel里面的表名获取工作表
     table = data.sheet_by_name("Sheet1")
     # 通过索引获取工作表
@@ -101,6 +101,11 @@ if __name__ == '__main__':
     #       )  # 获取列数
     nrow = table.nrows  # 获取行数
     # print(nrow,"nrow")
+
+    # 开始执行时，先删除以前log数据
+    with open("log.txt","r+") as f:
+        f.truncate(0)
+
 
     for i in range(nrow-1):
         print(i+1)
