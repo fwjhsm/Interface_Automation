@@ -107,6 +107,9 @@ if __name__ == '__main__':
         f.truncate(0)
 
     print("验证构建是否成功")
+    print("验证构建是否成功2")
+
+
 
     for i in range(nrow-1):
         print(i+1)
