@@ -106,6 +106,7 @@ if __name__ == '__main__':
     with open("D:\myCode\Interface_Automation\config\log.txt","r+") as f:
         f.truncate(0)
 
+    print("验证构建是否成功")
 
     for i in range(nrow-1):
         print(i+1)
