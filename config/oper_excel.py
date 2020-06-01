@@ -83,7 +83,7 @@ class Test1():
 
 
 if __name__ == '__main__':
-    data = xlrd.open_workbook("data.csv")
+    data = xlrd.open_workbook("data.xlsx")
     # 通过excel里面的表名获取工作表
     table = data.sheet_by_name("Sheet1")
     # 通过索引获取工作表
